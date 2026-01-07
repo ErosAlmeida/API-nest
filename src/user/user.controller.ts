@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -13,6 +14,10 @@ import { ConfigService } from '@nestjs/config';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import * as authenticatedRequest from 'src/auth/types/authenticated-request';
+import { create } from 'domain';
+import type { AuthenticatedRequest } from 'src/auth/types/authenticated-request';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -30,6 +35,12 @@ export class UserController {
     console.log(req.user.email);
 
     return `olá do controller do user #${id}`;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('me')
+  update(@Req() req: AuthenticatedRequest, @Body() dto: UpdateUserDto) {
+    return this.userService.update(req.user.id, dto);
   }
 
   @Post()
