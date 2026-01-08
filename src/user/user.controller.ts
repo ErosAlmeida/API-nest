@@ -14,10 +14,11 @@ import { ConfigService } from '@nestjs/config';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import * as authenticatedRequest from 'src/auth/types/authenticated-request';
-import { create } from 'domain';
 import type { AuthenticatedRequest } from 'src/auth/types/authenticated-request';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @Controller('user')
 export class UserController {
@@ -39,12 +40,14 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Patch('me')
-  update(@Req() req: AuthenticatedRequest, @Body() dto: UpdateUserDto) {
-    return this.userService.update(req.user.id, dto);
+  async update(@Req() req: AuthenticatedRequest, @Body() dto: UpdateUserDto) {
+    const user = await this.userService.update(req.user.id, dto);
+    return new UserResponseDto(user);
   }
 
   @Post()
-  create(@Body() dto: CreateUserDto) {
-    return this.userService.create(dto);
+  async create(@Body() dto: CreateUserDto) {
+    const user = await this.userService.create(dto);
+    return new UserResponseDto(user);
   }
 }

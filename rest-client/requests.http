@@ -38,5 +38,6 @@ Content-Type: application/json
 Authorization: Bearer {{jwtToken}}
 
 {
-  "email": "user1@email.com"
+  "name" : "Eros",
+  "email": "erosr1@email.com"
 }
