@@ -20,6 +20,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: './db.sqlite',
       synchronize: true,
       autoLoadEntities: true,
+      // entities: [User, Post],
     }),
   ],
   controllers: [AppController],
