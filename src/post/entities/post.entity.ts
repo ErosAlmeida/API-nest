@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -39,6 +40,6 @@ export class Post {
 
   // Many to One <- authorId <- FK para User
 
-  @ManyToMany(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   author: User;
 }
